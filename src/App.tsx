@@ -421,7 +421,7 @@ const FACTIONS: Record<string, {
   },
 
   Arachne: {
-    accent:"#E3090D", rep:"Charter", tag:"PvP · Melee · Weapons",
+    accent:"#b80b0e", rep:"Charter", tag:"PvP · Melee · Weapons",
     cols:6, rows:4,
     nodes:[
       {id:"ar-lmg-mods",     name:"LMG Mods",           requires:null,                  col:1,row:1, ranks:[
