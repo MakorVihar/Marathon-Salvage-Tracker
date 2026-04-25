@@ -100,8 +100,8 @@ interface NodeDef {
 
 interface SalvageInfo {
   r?: keyof typeof R;
-  locs?: { poi: string }[];
-  containers?: string[]; // <--- Add this line
+  locs?: { map: string; poi: string }[]; // <--- We missed the 'map: string' part!
+  containers?: string[];
 }
 
 // ── Faction data ──────────────────────────────────────────────────────────────
