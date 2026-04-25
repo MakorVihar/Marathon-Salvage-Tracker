@@ -98,6 +98,12 @@ interface NodeDef {
   ranks: RankDef[];
 }
 
+interface SalvageInfo {
+  r?: keyof typeof R;
+  locs?: { poi: string }[];
+  containers?: string[]; // <--- Add this line
+}
+
 // ── Faction data ──────────────────────────────────────────────────────────────
 // rankId = `${nodeId}:${rankIndex}` e.g. "ca-expansion:0"
 
@@ -597,7 +603,7 @@ const expandContainers = (containers:string[]):string[] => {
 // ── SalvageIcon ───────────────────────────────────────────────────────────────
 function SalvageIcon({name,size=20}:{name:string;size?:number}) {
   const [err,setErr]=useState(false);
-  const info=SALVAGE[name]||{};
+  const info = (SALVAGE[name] || {}) as SalvageInfo;
   const col=R[info.r||"s"]?.color||"#888";
   const src=ICONS[name];
   if(err||!src) return <div style={{width:size,height:size,borderRadius:3,background:col+"22",border:`1px solid ${col}55`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*0.5,color:col,fontWeight:700,flexShrink:0}}>{name[0]}</div>;
@@ -836,7 +842,7 @@ const UNIT=56;
 const CELL_SPAN:Record<string,{cols:number,rows:number}>={c:{cols:2,rows:2},p:{cols:2,rows:2},su:{cols:2,rows:2},d:{cols:2,rows:1},e:{cols:1,rows:1},s:{cols:1,rows:1}};
 
 function InvCell({name,qty,onSet,forBatch,batchMode,BG0,TEXT}:{name:string;qty:number;onSet:(n:string,v:number)=>void;forBatch?:boolean;batchMode?:"add"|"remove"|null;BG0:string;TEXT:string}) {
-  const info=SALVAGE[name]||{};
+  const info = (SALVAGE[name] || {}) as SalvageInfo;
   const rc=R[info.r||"s"].color;
   const src=ICONS[name];
   const span=CELL_SPAN[info.r||"s"];
@@ -982,7 +988,7 @@ export default function App() {
     const groundCounts:Record<string,number>={};
     const containerCounts:Record<string,number>={};
     Object.entries(remaining).forEach(([name,qty])=>{
-      const info=SALVAGE[name]; if(!info) return;
+      const info = (SALVAGE[name] || {}) as SalvageInfo; if(!info) return;
       info.locs.forEach(({map,poi})=>{const k=`${map}|||${poi}`;groundCounts[k]=(groundCounts[k]||0)+qty;});
       expandContainers(info.containers).forEach(ct=>{(CONTAINER_MAPS[ct]||[]).forEach(map=>{const k=`${map}|||${ct}`;containerCounts[k]=(containerCounts[k]||0)+qty;});});
     });
@@ -998,7 +1004,7 @@ export default function App() {
     const {map,poi}=activePOI;
     const isContainer=poi in CONTAINER_MAPS;
     return Object.entries(remaining).filter(([name])=>{
-      const info=SALVAGE[name];if(!info) return false;
+      const info = (SALVAGE[name] || {}) as SalvageInfo;if(!info) return false;
       if(isContainer) return expandContainers(info.containers).includes(poi)&&(CONTAINER_MAPS[poi]||[]).includes(map);
       return info.locs.some(l=>l.map===map&&l.poi===poi);
     }).map(([name,qty])=>({name,qty:qty as number})).sort((a,b)=>(SALVAGE[b.name]?.r||"s").localeCompare(SALVAGE[a.name]?.r||"s"));
@@ -1189,7 +1195,7 @@ export default function App() {
                         <div style={{flex:1,height:"1px",background:BORDER}}/>
                       </div>
                       {items.map(([name,qty])=>{
-                        const info=SALVAGE[name]||{},rc2=R[info.r||"s"].color;
+                        const info = (SALVAGE[name] || {}) as SalvageInfo,rc2=R[info.r||"s"].color;
                         const have=owned[name]||0;
                         const isIgnored=ignored.has(name);
                         const rem=isIgnored?0:Math.max(0,(qty as number)-have);
