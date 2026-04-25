@@ -647,7 +647,7 @@ function NodeCard({node, acc, tracked, onTrack, BG0, BG1, BG2, BORDER, TEXT, MUT
             const isTracked=tracked.has(rid);
             return (
               <button key={i} onClick={()=>setViewing(i)} style={{
-                width:20,height:20,borderRadius:3,border:`1.5px solid ${isViewing?acc+"88":isTracked?acc:BORDER}`,
+                width:20,height:20,borderRadius:3,border:`1.5px solid ${isViewing?acc:isTracked?acc+"88":BORDER}`,
                 background:isTracked?acc+"22":"transparent",
                 color:isViewing?acc:isTracked?acc:MUTED,
                 fontSize:9,fontWeight:700,cursor:"pointer",lineHeight:1,
