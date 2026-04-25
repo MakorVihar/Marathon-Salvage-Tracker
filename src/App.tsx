@@ -90,23 +90,21 @@ interface RankDef {
   req: [string, number][];
 }
 interface NodeDef {
-  id: string;          // unique node id e.g. "ca-expansion"
-  name: string;        // display name
-  requires: string | null;  // id of prerequisite node (or null)
-  col: number;         // 1-based grid column
-  row: number;         // 1-based grid row
+  id: string;
+  name: string;
+  requires: string | null;
+  col: number;
+  row: number;
   ranks: RankDef[];
 }
 
 interface SalvageInfo {
   r?: keyof typeof R;
-  locs?: { map: string; poi: string }[]; // <--- We missed the 'map: string' part!
+  locs?: { map: string; poi: string }[];
   containers?: string[];
 }
 
 // ── Faction data ──────────────────────────────────────────────────────────────
-// rankId = `${nodeId}:${rankIndex}` e.g. "ca-expansion:0"
-
 const FACTIONS: Record<string, {
   accent: string; rep: string; tag: string;
   cols: number; rows: number;
@@ -195,7 +193,7 @@ const FACTIONS: Record<string, {
   },
 
   NuCaloric: {
-    accent:"#5A9E30", rep:"Gaius", tag:"Shields · Healing · Survival",
+    accent:"#F1387D", rep:"Gaius", tag:"Shields · Healing · Survival",
     cols:6, rows:4,
     nodes:[
       {id:"nc-safeguard",    name:"Safeguard",          requires:null,              col:1,row:1, ranks:[
@@ -280,7 +278,7 @@ const FACTIONS: Record<string, {
   },
 
   Traxus: {
-    accent:"#D4922A", rep:"Vulcan", tag:"Weapons · Mods · Combat",
+    accent:"#EB7209", rep:"Vulcan", tag:"Weapons · Mods · Combat",
     cols:6, rows:4,
     nodes:[
       {id:"tx-dlx-chips",    name:"Deluxe Chips",       requires:"tx-enh-chips",                    col:1,row:1, ranks:[
@@ -351,7 +349,7 @@ const FACTIONS: Record<string, {
   },
 
   MIDA: {
-    accent:"#7B6BD4", rep:"_GANTRY", tag:"Grenades · Equipment · Mobility",
+    accent:"#C373ED", rep:"_GANTRY", tag:"Grenades · Equipment · Mobility",
     cols:6, rows:4,
     nodes:[
       {id:"mi-eyes-open",    name:"Eyes Open",          requires:"mi-bad-step",         col:1,row:1, ranks:[
@@ -423,7 +421,7 @@ const FACTIONS: Record<string, {
   },
 
   Arachne: {
-    accent:"#CC4A25", rep:"Charter", tag:"PvP · Melee · Weapons",
+    accent:"#E3090D", rep:"Charter", tag:"PvP · Melee · Weapons",
     cols:6, rows:4,
     nodes:[
       {id:"ar-lmg-mods",     name:"LMG Mods",           requires:null,                  col:1,row:1, ranks:[
@@ -494,7 +492,7 @@ const FACTIONS: Record<string, {
   },
 
   Sekiguchi: {
-    accent:"#3A82C4", rep:"Nona", tag:"Cores · Implants · Energy",
+    accent:"#80ECB5", rep:"Nona", tag:"Cores · Implants · Energy",
     cols:6, rows:4,
     nodes:[
       {id:"sk-energy-amp",   name:"Energy Amp",          requires:null,                  col:1,row:1, ranks:[
@@ -609,6 +607,7 @@ function SalvageIcon({name,size=20}:{name:string;size?:number}) {
   if(err||!src) return <div style={{width:size,height:size,borderRadius:3,background:col+"22",border:`1px solid ${col}55`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*0.5,color:col,fontWeight:700,flexShrink:0}}>{name[0]}</div>;
   return <img src={src} style={{width:size,height:size,objectFit:"contain",flexShrink:0}} onError={()=>setErr(true)}/>;
 }
+
 // ── Node Card ─────────────────────────────────────────────────────────────────
 function NodeCard({node, acc, tracked, onTrack, BG0, BG1, BG2, BORDER, TEXT, MUTED, DIM}:{
   node:NodeDef; acc:string;
@@ -623,22 +622,23 @@ function NodeCard({node, acc, tracked, onTrack, BG0, BG1, BG2, BORDER, TEXT, MUT
 
   return (
     <div style={{
-      width:GCARD_W, 
-      minHeight: MIN_CARD_HEIGHT, // <--- This "ceils" the height to at least this value
-      borderRadius:6, 
+      width:GCARD_W,
+      minHeight: MIN_CARD_HEIGHT,
+      borderRadius:6,
       padding:"8px 8px 6px",
-      background:anyTracked?`linear-gradient(135deg,${acc}1a,${BG2})`:`${BG2}`,
+      background: BG2,
       border:`1px solid ${anyTracked?acc:BORDER}`,
-      boxShadow:anyTracked?`0 0 10px ${acc}22`:"none",
+      // Glow tuning:
+      //   outer: "0 0 {spread}px {color}{opacity}"  — increase spread (px) or opacity (hex) for more outer glow
+      //   inset: "inset 0 0 {spread}px {color}{opacity}" — increase spread or opacity for more inner glow
+      boxShadow:anyTracked?`0 0 18px ${acc}88, inset 0 0 14px ${acc}33`:"none",
       display:"flex",
       flexDirection:"column",
       gap:4,
       transition:"border-color 0.15s",
     }}>
-      {/* Node name */}
       <div style={{fontSize:10,fontWeight:700,color:anyTracked?acc:TEXT,lineHeight:1.2,marginBottom:2}}>{node.name}</div>
 
-      {/* Rank selector (multi-rank only) */}
       {hasMulti && (
         <div style={{display:"flex",gap:2,flexWrap:"wrap"}}>
           {node.ranks.map((_,i)=>{
@@ -647,8 +647,8 @@ function NodeCard({node, acc, tracked, onTrack, BG0, BG1, BG2, BORDER, TEXT, MUT
             const isTracked=tracked.has(rid);
             return (
               <button key={i} onClick={()=>setViewing(i)} style={{
-                width:20,height:20,borderRadius:3,border:`1.5px solid ${isViewing?acc:isTracked?acc+"88":BORDER}`,
-                background:isViewing?acc+"22":"transparent",
+                width:20,height:20,borderRadius:3,border:`1.5px solid ${isViewing?acc+"88":isTracked?acc:BORDER}`,
+                background:isTracked?acc+"22":"transparent",
                 color:isViewing?acc:isTracked?acc:MUTED,
                 fontSize:9,fontWeight:700,cursor:"pointer",lineHeight:1,
                 display:"flex",alignItems:"center",justifyContent:"center",
@@ -666,11 +666,9 @@ function NodeCard({node, acc, tracked, onTrack, BG0, BG1, BG2, BORDER, TEXT, MUT
         </div>
       )}
 
-      {/* Rank details */}
       <div style={{fontSize:8,color:MUTED,lineHeight:1.35}}>{vRank.fx}</div>
       <div style={{fontSize:8,color:"#D4922A",fontWeight:600}}>◆ {vRank.cr.toLocaleString()}</div>
-      
-      {/* Wrap content in a div with flex: 1 to push the button to the bottom if desired */}
+
       <div style={{ flex: 1 }}>
         {vRank.req.length>0 && (
           <div style={{display:"flex",flexDirection:"column",gap:2}}>
@@ -688,9 +686,8 @@ function NodeCard({node, acc, tracked, onTrack, BG0, BG1, BG2, BORDER, TEXT, MUT
         )}
       </div>
 
-      {/* Track button */}
       <button onClick={()=>onTrack(`${node.id}:${viewing}`)} style={{
-        marginTop: "auto", // <--- Pushes the button to the very bottom of the card
+        marginTop: "auto",
         padding:"3px 0",
         borderRadius:3,
         fontSize:8,
@@ -706,131 +703,70 @@ function NodeCard({node, acc, tracked, onTrack, BG0, BG1, BG2, BORDER, TEXT, MUT
     </div>
   );
 }
+
 // ── Grid constants ───────────────────────────────────────────────────────────
-const GCELL_W = 180; 
-const GCELL_H = 190; 
-const GCARD_W = 160; 
+const GCELL_W = 180;
+const GCELL_H = 190;
+const GCARD_W = 160;
+const MIN_CARD_HEIGHT = 110;
 
-// This MUST match the minHeight in your NodeCard style
-const MIN_CARD_HEIGHT = 110; 
-
-// Center of a card in the grid
-const gcx = (col:number) => (col - 1) * GCELL_W + GCARD_W / 2;
-
-// Edges - Updated to use MIN_CARD_HEIGHT
-const gRight  = (col:number) => (col - 1) * GCELL_W + GCARD_W;
-const gLeft   = (col:number) => (col - 1) * GCELL_W;
-
-// Bottom edge of the card's minimum footprint
-const gBottom = (row:number) => (row - 1) * GCELL_H + MIN_CARD_HEIGHT;
-
-// Top edge of the card
-const gTop    = (row:number) => (row - 1) * GCELL_H;
-
-// Vertical midpoint of the card's minimum footprint
-// Using MIN_CARD_HEIGHT / 2 keeps horizontal lines perfectly level across rows
-const gMidY   = (row:number) => (row - 1) * GCELL_H + (MIN_CARD_HEIGHT / 2);
+const gcx    = (col:number) => (col - 1) * GCELL_W + GCARD_W / 2;
+const gRight = (col:number) => (col - 1) * GCELL_W + GCARD_W;
+const gLeft  = (col:number) => (col - 1) * GCELL_W;
+const gBottom= (row:number) => (row - 1) * GCELL_H + MIN_CARD_HEIGHT;
+const gTop   = (row:number) => (row - 1) * GCELL_H;
+const gMidY  = (row:number) => (row - 1) * GCELL_H + (MIN_CARD_HEIGHT / 2);
 
 // ── Connector lines between nodes ─────────────────────────────────────────────
 function NodeConnectors({nodes, cols, rows, acc}:{
   nodes:NodeDef[];cols:number;rows:number;acc:string;
 }) {
-  const lines: React.ReactNode[]=[];
-
-  nodes.forEach((node, index) => {
-    if(!node.requires) return;
-    const parent=nodes.find(n=>n.id===node.requires);
-    if(!parent) return;
-
-    const key = `path-${node.id}-${index}`;
-    const stroke = acc;
-    
-    // Path logic remains the same
-    let d = "";
-    if(parent.row === node.row){
-      d = `M${gRight(parent.col)},${gMidY(parent.row)} L${gLeft(node.col)},${gMidY(node.row)}`;
-    } else if(parent.col === node.col){
-      d = `M${gcx(parent.col)},${gBottom(parent.row)} L${gcx(parent.col)},${gTop(node.row)}`;
-    } else {
-      const px = gcx(parent.col);
-      const py1 = gBottom(parent.row);
-      const cy = gMidY(node.row);
-      const cx = node.col > parent.col ? gLeft(node.col) : gRight(node.col);
-      d = `M${px},${py1} L${px},${cy} L${cx},${cy}`;
-    }
-
-    lines.push(
-      <path 
-        key={key}
-        d={d}
-        fill="none"
-        stroke={stroke}
-        strokeWidth={10} // Width of the chevron "tunnel"
-        strokeOpacity={0.8}
-        strokeDasharray="4, 6" // This creates the "narrow" spacing
-        strokeLinecap="butt"
-        // The magic property: This makes the "line" use the chevron marker
-        markerEnd={`url(#chevron-${index})`} 
-        style={{
-            // We use a marker-start/mid/end or a dash pattern. 
-            // But for total control, let's use a Dash Path with a specific shape:
-            strokeDasharray: "1, 10",
-        }}
-      />
-    );
-
-    // ALTERNATIVE: If patterns are acting up, the most reliable "Narrow" look 
-    // is actually a simple dashed line with a high stroke width and a linejoin.
-    // However, to get the SHAPE of a chevron, we'll use a Marker.
-  });
-
   const W = cols * GCELL_W;
   const H = rows * GCELL_H;
 
   return (
     <svg style={{position:"absolute",top:0,left:0,pointerEvents:"none",overflow:"visible"}} width={W} height={H}>
-      <defs>
-        {/* We define the chevron once here */}
-        <marker id="chevron-marker" 
-          viewBox="0 0 10 10" 
-          refX="5" refY="5"
-          markerWidth="4" 
-          markerHeight="4"
-          orient="auto-start-reverse">
-          <path d="M 0 0 L 5 5 L 0 10" fill="none" stroke={acc} strokeWidth="2" />
-        </marker>
-      </defs>
-
-      {/* Since we want MANY chevrons, we use the dash trick combined 
-          with the original textPath, but we'll normalize the scaling.
-      */}
       {nodes.map((node, i) => {
-          if(!node.requires) return null;
-          const parent=nodes.find(n=>n.id===node.requires);
-          if(!parent) return null;
-          
-          const pId = `p-${node.id}`;
-          let d = "";
-          if(parent.row === node.row) d = `M${gRight(parent.col)},${gMidY(parent.row)} L${gLeft(node.col)},${gMidY(node.row)}`;
-          else if(parent.col === node.col) d = `M${gcx(parent.col)},${gBottom(parent.row)} L${gcx(parent.col)},${gTop(node.row)}`;
-          else {
-              const px = gcx(parent.col); const py = gBottom(parent.row);
-              const cy = gMidY(node.row); const cx = node.col > parent.col ? gLeft(node.col) : gRight(node.col);
-              d = `M${px},${py} L${px},${cy} L${cx},${cy}`;
-          }
+        if(!node.requires) return null;
+        const parent=nodes.find(n=>n.id===node.requires);
+        if(!parent) return null;
 
-          return (
-            <g key={i}>
-              <path id={pId} d={d} fill="none" stroke="none" />
-              <text dy="0.3em" style={{ fontSize: 26, fill: acc, userSelect: 'none' }}>
-                <textPath href={`#${pId}`} spacing="exact" method="stretch">
-                    {/* Adding 'method="stretch"' actually forces the browser to calculate 
-                        the bounding box once, preventing the "growing" bug. */}
-                    {"›".repeat(100)}
-                </textPath>
-              </text>
-            </g>
-          );
+        const pId = `p-${node.id}`;
+        let d = "";
+		let icon = "›"
+        if(parent.row === node.row) {
+          // Both nodes share the same row so midY is identical — just pick
+          // the facing edges (right edge of parent if child is to the right, left edge otherwise).
+          const y = gMidY(parent.row);
+          const rightX = gRight(parent.col);
+          const leftX   = gLeft(node.col);
+		  
+		  // Flip the icon and direction if it it is child <- parent instaed of parent -> child
+		  icon = node.col > parent.col ? "›" : "‹"
+          d =  node.col > parent.col ? `M${rightX},${y} L${leftX},${y}` : `M${leftX},${y} L${rightX},${y}`;
+        } else if(parent.col === node.col) {
+          d = `M${gcx(parent.col)},${gBottom(parent.row)} L${gcx(parent.col)},${gTop(node.row)}`;
+        } else {
+          // Different row AND column — elbow connector.
+          // Always drop from the parent's bottom centre, travel to child's midY,
+          // then go horizontally to the child's nearest edge.
+          const px  = gcx(parent.col);
+          const py  = gBottom(parent.row);
+          const cy  = gMidY(node.row);
+          const cx  = node.col > parent.col ? gLeft(node.col) : gRight(node.col);
+          d = `M${px},${py} L${px},${cy} L${cx},${cy}`;
+        }
+
+        return (
+          <g key={i}>
+            <path id={pId} d={d} fill="none" stroke="none" />
+            <text dy="0.3em" style={{ fontSize: 26, fill: acc, userSelect: 'none' }}>
+              <textPath href={`#${pId}`} spacing="exact" method="stretch">
+                {icon.repeat(100)}
+              </textPath>
+            </text>
+          </g>
+        );
       })}
     </svg>
   );
@@ -949,9 +885,23 @@ export default function App() {
   const fd=FACTIONS[faction];
   const toggleTrack=(rankId:string)=>setTracked(p=>{const n=new Set(p);n.has(rankId)?n.delete(rankId):n.add(rankId);return n;});
   const toggleIgnore=(name:string)=>setIgnored(p=>{const n=new Set(p);n.has(name)?n.delete(name):n.add(name);return n;});
+
+  // ── CHANGE 3: Clear only the current faction's tracked ranks ────────────────
+  const clearFaction=()=>setTracked(p=>{
+    const n=new Set(p);
+    fd.nodes.forEach(node=>node.ranks.forEach((_,i)=>n.delete(`${node.id}:${i}`)));
+    return n;
+  });
+
+  // ── CHANGE 4: Track all ranks for the current faction ───────────────────────
+  const trackAllFaction=()=>setTracked(p=>{
+    const n=new Set(p);
+    fd.nodes.forEach(node=>node.ranks.forEach((_,i)=>n.add(`${node.id}:${i}`)));
+    return n;
+  });
+
   const clearAll=()=>setTracked(new Set());
 
-  // Aggregate needed items from tracked ranks
   const needed=useMemo(()=>{
     const agg:Record<string,number>={};
     Object.values(FACTIONS).forEach(fac=>fac.nodes.forEach(node=>node.ranks.forEach((rank,i)=>{
@@ -1015,13 +965,17 @@ export default function App() {
     return fac.nodes.reduce((acc,node)=>acc+node.ranks.filter((_,i)=>tracked.has(`${node.id}:${i}`)).length,0);
   };
 
+  // Whether ALL ranks for the current faction are tracked (used to toggle Track All label)
+  const allFactionTracked=fd.nodes.every(node=>node.ranks.every((_,i)=>tracked.has(`${node.id}:${i}`)));
+
   const togglePOI=(map:string,poi:string)=>setActivePOI(p=>p&&p.map===map&&p.poi===poi?null:{map,poi});
 
-  // Colours
   const BG0="#090b0e",BG1="#0f1318",BG2="#161c24",BG3="#1e2738";
   const BORDER="rgba(255,255,255,0.07)";
   const TEXT="#d6dde8",MUTED="#6a7a8e",DIM="#3a4a5a";
   const acc=fd.accent;
+
+  const currentFactionTrackedCount=factionTrackedCount(faction);
 
   return (
     <div style={{display:"flex",flexDirection:"column",height:"100vh",background:BG0,color:TEXT,fontFamily:"system-ui,sans-serif",fontSize:13,overflow:"hidden"}}>
@@ -1060,7 +1014,7 @@ export default function App() {
             );
           })}
           <div style={{flex:1}}/>
-          {tracked.size>0&&<button onClick={clearAll} style={{padding:"5px 12px",margin:"0 8px",borderRadius:4,border:`1px solid ${BORDER}`,background:"transparent",color:"#cc5555",fontSize:10,cursor:"pointer",fontWeight:600,letterSpacing:"0.05em",whiteSpace:"nowrap",flexShrink:0}}>CLEAR ALL FACTIONS</button>}
+          {tracked.size>0&&<button onClick={clearAll} style={{padding:"5px 12px",margin:"0 8px",borderRadius:4,border:`1px solid ${BORDER}`,background:"transparent",color:"#cc5555",fontSize:10,cursor:"pointer",fontWeight:600,letterSpacing:"0.05em",whiteSpace:"nowrap",flexShrink:0}}>CLEAR ALL</button>}
         </div>
       )}
 
@@ -1074,13 +1028,26 @@ export default function App() {
           {/* Left: upgrade grid */}
           <div style={{flex:1,overflowY:"auto",overflowX:"auto",padding:16}}>
             <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16,padding:"10px 14px",background:BG2,borderRadius:8,border:`1px solid ${acc}33`,borderLeft:`3px solid ${acc}`}}>
-              <div>
+              <div style={{flex:1}}>
                 <div style={{fontSize:13,fontWeight:700,color:acc,letterSpacing:"0.08em",marginBottom:2}}>{faction.toUpperCase()}</div>
                 <div style={{fontSize:11,color:MUTED}}>{fd.tag} · Rep: {fd.rep}</div>
               </div>
+              <button
+                onClick={allFactionTracked ? clearFaction : trackAllFaction}
+                style={{padding:"4px 11px",borderRadius:4,border:`1px solid ${acc}88`,background:allFactionTracked?acc+"22":"transparent",color:acc,fontSize:10,cursor:"pointer",fontWeight:600,letterSpacing:"0.05em",whiteSpace:"nowrap",flexShrink:0}}
+              >
+                {allFactionTracked?"✓ ALL TRACKED":"TRACK ALL"}
+              </button>
+              {currentFactionTrackedCount>0&&(
+                <button
+                  onClick={clearFaction}
+                  style={{padding:"4px 11px",borderRadius:4,border:`1px solid #cc555588`,background:"transparent",color:"#cc5555",fontSize:10,cursor:"pointer",fontWeight:600,letterSpacing:"0.05em",whiteSpace:"nowrap",flexShrink:0}}
+                >
+                  CLEAR {faction.toUpperCase()}
+                </button>
+              )}
             </div>
 
-            {/* Grid */}
             <div style={{position:"relative",width:fd.cols*GCELL_W,minHeight:fd.rows*GCELL_H}}>
               <NodeConnectors nodes={fd.nodes} cols={fd.cols} rows={fd.rows} acc={acc}/>
               {fd.nodes.map(node=>(
@@ -1104,7 +1071,6 @@ export default function App() {
                 <div style={{fontSize:11,color:MUTED,textAlign:"center",lineHeight:1.6}}>Track upgrade ranks to build your salvage list</div>
               </div>
             ):(<>
-              {/* Header */}
               <div style={{padding:"11px 14px",borderBottom:`1px solid ${BORDER}`}}>
                 <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
                   <span style={{fontSize:9,fontWeight:700,letterSpacing:"0.12em",color:MUTED,flex:1}}>SALVAGE REQUIRED</span>
@@ -1113,7 +1079,6 @@ export default function App() {
                 <div style={{fontSize:11,color:TEXT}}>{sortedItems.length} items · {tracked.size} tracked · <span style={{color:"#D4922A"}}>◆ {totalCr.toLocaleString()}</span></div>
               </div>
 
-              {/* Best locations */}
               {locationScores.length>0&&(
                 <div style={{padding:"11px 14px",borderBottom:`1px solid ${BORDER}`}}>
                   <div style={{fontSize:9,fontWeight:700,letterSpacing:"0.12em",color:MUTED,marginBottom:8}}>BEST LOCATIONS TO FARM</div>
@@ -1181,7 +1146,6 @@ export default function App() {
                 </div>
               )}
 
-              {/* Item list */}
               <div style={{padding:"11px 14px",flex:1}}>
                 {["c","p","su","d","e","s"].map(tier=>{
                   const items=sortedItems.filter(([n])=>(SALVAGE[n]?.r||"s")===tier);
