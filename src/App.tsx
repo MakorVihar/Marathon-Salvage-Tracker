@@ -855,7 +855,7 @@ function InventoryTab({owned,setOwned,BG0,BG1,BG2,BG3,BORDER,TEXT,MUTED,DIM}:{ow
                 <div style={{flex:1,height:1,background:BORDER}}/>
                 <span style={{fontSize:9,color:DIM}}>{items.filter(n=>(owned[n]||0)>0).length}/{items.length}</span>
               </div>
-              <div style={{display:"flex",flexWrap:"wrap",gap:1,background:"#000",border:"1px solid #000",width:"fit-content"}}>
+              <div style={{display:"flex",flexWrap:"wrap",gap:1,background:"transparent",width:"fit-content"}}>
                 {items.map(name=>{
                   const qty=batchMode?(batchItems[name]||0):(owned[name]||0);
                   return <InvCell key={name} name={name} qty={qty} onSet={batchMode?(n,v)=>setBatchItems(p=>v===0?(({[n]:_,...r})=>r)(p):{...p,[n]:v}):onSet} forBatch={!!batchMode} batchMode={batchMode} BG0={BG0} TEXT={TEXT}/>;
