@@ -70,7 +70,7 @@ export const FACTIONS: Record<string, FactionDef> = {
     {id:"ca-fixative",    name:"Fixative",              requires:null,             col:4,row:4,ranks:[{name:"FIXATIVE.EXE",    fx:"Increased chance of Matter Fixatives from UESC",cr:3500,req:[]}]},
     {id:"ca-slider",      name:"Slider",                requires:"ca-active-cool", col:6,row:4,ranks:[{name:"SLIDER.EXE",      fx:"Sprint slide generates less heat",cr:7000,req:[]}]},
   ]},
-  NuCaloric: {accent:"#5A9E30",rep:"Gaius",tag:"Shields · Healing · Survival",cols:6,rows:4,nodes:[
+  NuCaloric: {accent:"#F1387D",rep:"Gaius",tag:"Shields · Healing · Survival",cols:6,rows:4,nodes:[
     {id:"nc-safeguard",    name:"Safeguard",         requires:null,               col:1,row:1,ranks:[{name:"Safeguard",        fx:"Free Daily Shield Charges in Armory",cr:750,  req:[["Unstable Biomass",16]]}]},
     {id:"nc-adv-shields",  name:"Advanced Shields",  requires:"nc-safeguard",     col:2,row:1,ranks:[{name:"Advanced Shields", fx:"Unlocks Advanced Shield Charges",   cr:1500, req:[["Reclaimed Biostripping",10],["Unstable Biomass",10]]}]},
     {id:"nc-safeguard-plus",name:"Safeguard+",       requires:"nc-adv-shields",   col:3,row:1,ranks:[
@@ -126,7 +126,7 @@ export const FACTIONS: Record<string, FactionDef> = {
     {id:"nc-self-revive",  name:"Self-Revive",       requires:null,               col:4,row:4,ranks:[{name:"Self-Revive",      fx:"Unlocks Self-Revives for purchase",cr:1500, req:[["Neurochem Pack",4],["Sparkleaf",14]]}]},
     {id:"nc-field-medic",  name:"Field Medic",       requires:null,               col:6,row:4,ranks:[{name:"FIELD_MEDIC.EXE",  fx:"Health & shield consumables use faster",cr:5000,req:[["Hazard Capsule",3],["Enzyme Replicator",8]]}]},
   ]},
-  Traxus: {accent:"#D4922A",rep:"Vulcan",tag:"Weapons · Mods · Combat",cols:6,rows:4,nodes:[
+  Traxus: {accent:"#EB7209",rep:"Vulcan",tag:"Weapons · Mods · Combat",cols:6,rows:4,nodes:[
     {id:"tx-dlx-chips",    name:"Deluxe Chips",      requires:"tx-enh-chips",     col:1,row:1,ranks:[{name:"Deluxe Chips",    fx:"Unlocks Deluxe chip mods in Armory",cr:5000,req:[["Alien Alloy",3],["Reflex Coil",11]]}]},
     {id:"tx-enh-chips",    name:"Enhanced Chips",    requires:null,               col:3,row:1,ranks:[
       {name:"Enhanced Chips",  fx:"Unlocks Enhanced chip mods",      cr:1500, req:[["Altered Wire",7],["Unstable Gunmetal",6]]},
@@ -172,7 +172,7 @@ export const FACTIONS: Record<string, FactionDef> = {
     {id:"tx-enh-hardline", name:"Enhanced Hardline PR",requires:"tx-mips-sniper",  col:5,row:4,ranks:[{name:"Enh. Hardline PR",fx:"Unlocks Enhanced Hardline PR",     cr:2000, req:[["Anomalous Wire",7],["Plasma Filament",21]]}]},
     {id:"tx-dlx-precision-mods",name:"Deluxe Precision Mods",requires:"tx-enh-hardline",col:6,row:4,ranks:[{name:"Deluxe Precision Mods",fx:"Rotating Deluxe precision mod",cr:5000,req:[["Alien Alloy",2],["Tachyon Filament",9]]}]},
   ]},
-  MIDA: {accent:"#7B6BD4",rep:"_GANTRY",tag:"Grenades · Equipment · Mobility",cols:6,rows:4,nodes:[
+  MIDA: {accent:"#C373ED",rep:"_GANTRY",tag:"Grenades · Equipment · Mobility",cols:6,rows:4,nodes:[
     {id:"mi-eyes-open",   name:"Eyes Open",          requires:"mi-bad-step",      col:1,row:1,ranks:[{name:"Eyes Open",       fx:"Unlocks Proximity Sensor",         cr:2000, req:[["Dynamic Compounds",28],["Surveillance Lens",14]]}]},
     {id:"mi-bad-step",    name:"Bad Step",           requires:null,               col:2,row:1,ranks:[{name:"Bad Step",        fx:"Unlocks Claymores",                cr:750,  req:[["Unstable Lead",13]]}]},
     {id:"mi-got-em",      name:"Got Em",             requires:"mi-bad-step",      col:3,row:1,ranks:[{name:"Got Em",          fx:"Unlocks Trap Packs",               cr:1500, req:[["Dynamic Compounds",19],["Surveillance Lens",9]]}]},
@@ -215,7 +215,7 @@ export const FACTIONS: Record<string, FactionDef> = {
     {id:"mi-full-throttle",name:"Full Throttle",     requires:"mi-cardio-kick",   col:5,row:4,ranks:[{name:"FULL_THROTTLE.EXE",fx:"Cardio Kick effect at start of run",cr:5000,req:[["Alien Alloy",3],["Ballistic Turbine",11]]}]},
     {id:"mi-cloud-cover", name:"Cloud Cover",        requires:null,               col:6,row:4,ranks:[{name:"CLOUD_COVER.EXE", fx:"Smoke cloud on exfil site activation",cr:5000,req:[["Hazard Capsule",3],["Biolens Seed",12]]}]},
   ]},
-  Arachne: {accent:"#CC4A25",rep:"Charter",tag:"PvP · Melee · Weapons",cols:6,rows:4,nodes:[
+  Arachne: {accent:"#B80B0E",rep:"Charter",tag:"PvP · Melee · Weapons",cols:6,rows:4,nodes:[
     {id:"ar-lmg-mods",    name:"LMG Mods",           requires:null,               col:1,row:1,ranks:[{name:"LMG MODS",        fx:"Unlocks Enhanced LMG mod set",     cr:750,  req:[["Unstable Gel",13]]}]},
     {id:"ar-railgun-mods",name:"Railgun Mods",        requires:null,               col:2,row:1,ranks:[{name:"RAILGUN MODS",    fx:"Unlocks Enhanced railgun mod set",  cr:1500, req:[["Drone Resin",8],["Unstable Gel",9]]}]},
     {id:"ar-shotgun-mods",name:"Shotgun Mods",        requires:null,               col:3,row:1,ranks:[{name:"SHOTGUN MODS",    fx:"Unlocks Enhanced shotgun mod set",  cr:750,  req:[["Unstable Gel",18]]}]},
@@ -255,7 +255,7 @@ export const FACTIONS: Record<string, FactionDef> = {
     {id:"ar-leech",       name:"Leech",               requires:null,               col:5,row:4,ranks:[{name:"LEECH.EXE",        fx:"Knife attacks restore health",     cr:5000, req:[["Synapse Cube",2]]}]},
     {id:"ar-heat-death",  name:"Heat Death",           requires:null,               col:6,row:4,ranks:[{name:"HEAT_DEATH.EXE",   fx:"Eliminating hostile reduces heat", cr:5000, req:[["Hazard Capsule",3],["Enzyme Replicator",11]]}]},
   ]},
-  Sekiguchi: {accent:"#3A82C4",rep:"Nona",tag:"Cores · Implants · Energy",cols:6,rows:4,nodes:[
+  Sekiguchi: {accent:"#80ECB5",rep:"Nona",tag:"Cores · Implants · Energy",cols:6,rows:4,nodes:[
     {id:"sk-energy-amp",  name:"Energy Amp",          requires:null,               col:1,row:1,ranks:[{name:"Energy Amp",       fx:"Unlocks Energy Amps for purchase", cr:750,  req:[["Unstable Diode",10]]}]},
     {id:"sk-amped",       name:"Amped",               requires:"sk-energy-amp",    col:2,row:1,ranks:[{name:"Amped",            fx:"Free Daily Energy Amps in Armory", cr:1500, req:[["Fractal Circuit",23],["Storage Drive",9]]}]},
     {id:"sk-amp-stock",   name:"Amp Stock",           requires:"sk-amped",         col:3,row:1,ranks:[{name:"Amp Stock",        fx:"Energy Amp stock increased in Armory",cr:2000,req:[["Paradox Circuit",12],["Amygdala Drive",5]]}]},
