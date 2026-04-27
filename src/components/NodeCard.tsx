@@ -23,8 +23,7 @@ export function NodeCard({ node, acc, tracked, onTrack, density, BG2, BORDER, TE
   const vRank = node.ranks[viewing];
   const hasMulti = node.ranks.length > 1;
   const anyTracked = node.ranks.some((_, i) => tracked.has(`${node.id}:${i}`));
-  const iconSlug = UPGRADE_ICONS[node.name];
-  const iconSrc = iconSlug ? `src/assets/upgrades/${iconSlug}.png` : null;
+  const iconSrc = UPGRADE_ICONS[node.name];
 
   if (density === "icon") {
     const dotRows = Math.ceil(node.ranks.length / 6);
