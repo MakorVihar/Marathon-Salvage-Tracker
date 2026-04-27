@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ICONS } from "../icons";
+import { ICONS } from "../data/icons";
 import { SALVAGE, R } from "../data/salvage";
 import { SalvageInfo } from "../types";
 
