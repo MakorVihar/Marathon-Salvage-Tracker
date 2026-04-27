@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { SALVAGE, R } from "../data/salvage";
 import { SalvageIcon } from "./SalvageIcon";
+import { SalvageInfo } from "../types";
 
 interface Props {
   name: string;
@@ -18,7 +19,7 @@ interface Props {
 
 export function ItemRow({ name, qty, have, isIgnored, toggleIgnore, BG0, BG2, BORDER, TEXT, MUTED, DIM }: Props) {
   const [hovered, setHovered] = useState(false);
-  const info = SALVAGE[name] || {};
+  const info = SALVAGE[name] as SalvageInfo || {};
   const rc   = R[info.r || "s"].color;
   const rem  = isIgnored ? 0 : Math.max(0, qty - have);
   const done = !isIgnored && rem === 0;

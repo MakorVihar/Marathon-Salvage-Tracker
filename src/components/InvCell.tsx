@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ICONS } from "../icons";
 import { SALVAGE, R } from "../data/salvage";
+import { SalvageInfo } from "../types";
 
 const UNIT = 112;
 const CELL_SPAN: Record<string, { cols: number; rows: number }> = {
@@ -23,7 +24,7 @@ interface Props {
 }
 
 export function InvCell({ name, qty, onSet, forBatch, batchMode, BG0, TEXT }: Props) {
-  const info = SALVAGE[name] || {};
+  const info = SALVAGE[name] as SalvageInfo || {};
   const rc   = R[info.r || "s"].color;
   const src  = ICONS[name];
   const span = CELL_SPAN[info.r || "s"];
